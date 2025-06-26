@@ -19,6 +19,7 @@ You can also run the site using Docker. Build and start the container with:
 ```
 
 The script builds the Docker image and runs it, exposing the port specified in the `PORT` environment variable (defaults to `3000`).
+If a container from a previous run is still active, the script will stop it before starting the new one to prevent port conflicts.
 Pass the `--update` flag to pull the latest changes before rebuilding. You can optionally provide the branch name (defaults to `main`):
 
 ```bash
