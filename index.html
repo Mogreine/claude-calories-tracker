@@ -8,13 +8,12 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide-react@latest/dist/lucide-react.min.js"></script>
 </head>
 <body class="bg-gray-100">
   <div id="root"></div>
-  <script type="text/babel">
-    // Import icons from lucide-react via UMD build
-    const { Mic, MicOff, Plus, Calendar, TrendingUp, AlertCircle } = lucideReact;
+  <script type="text/babel" data-type="module">
+    // Import icons from lucide-react via ESM
+    import { Mic, MicOff, Plus, Calendar, TrendingUp, AlertCircle } from 'https://cdn.skypack.dev/lucide-react';
 
     const CalorieTracker = () => {
       const { useState, useEffect } = React;
