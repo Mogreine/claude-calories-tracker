@@ -1,6 +1,6 @@
 # Claude Calories Tracker
 
-This repository contains a simple single-page application for tracking calories via voice input. It is implemented in plain HTML and React using CDN links so it can be hosted with GitHub Pages or served from a basic Node.js server.
+This repository contains a single-page application for tracking calories using audio recordings. The client records sound and sends it to the server which forwards it to OpenAI for transcription and nutritional analysis. The app is implemented in plain HTML and React using CDN links so it can be hosted with GitHub Pages or served from the included Node.js server.
 
 ## Running locally / on a VPS
 
@@ -21,9 +21,15 @@ You can also run the site using Docker. Build and start the container with:
 The script builds the Docker image and runs it, exposing the port specified in the `PORT` environment variable (defaults to `3000`).
 Pass the `--update` flag to pull the latest changes before rebuilding. You can optionally provide the branch name (defaults to `main`):
 
+
 ```bash
 ./docker_run.sh --update [branch]
 ```
+
+## OpenAI configuration
+
+Set the `OPENAI_API_KEY` environment variable with your API key so the server can
+transcribe audio and calculate nutrition using the OpenAI API.
 
 ## Testing
 
