@@ -100,6 +100,25 @@ async function analyzeWithOpenAI(transcript) {
 const server = http.createServer((req, res) => {
   const requestPath = req.url.split('?')[0];
 
+  if (req.method === 'POST' && requestPath === '/process-text') {
+    let body = '';
+    req.on('data', chunk => (body += chunk));
+    req.on('end', async () => {
+      try {
+        const { text } = JSON.parse(body);
+        const nutrition = await analyzeWithOpenAI(text);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ transcript: text, ...nutrition }));
+      } catch (err) {
+        console.error('Error processing text:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Processing failed' }));
+      }
+    });
+    return;
+  }
+
   if (req.method === 'POST' && requestPath === '/process-audio') {
     let body = '';
     req.on('data', chunk => (body += chunk));

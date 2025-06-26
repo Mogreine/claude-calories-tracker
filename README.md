@@ -1,6 +1,6 @@
 # Claude Calories Tracker
 
-This repository contains a single-page application for tracking calories using audio recordings. The client records sound and sends it to the server which forwards it to OpenAI for transcription and nutritional analysis. The app is implemented in plain HTML and React using CDN links so it can be hosted with GitHub Pages or served from the included Node.js server.
+This repository contains a single-page application for tracking calories using audio recordings or typed text. The client can record sound and send it to the server which forwards it to OpenAI for transcription and nutritional analysis. If speaking isn't convenient you can type a short description of what you ate and the server will analyze it the same way. The app is implemented in plain HTML and React using CDN links so it can be hosted with GitHub Pages or served from the included Node.js server.
 
 ## Running locally / on a VPS
 

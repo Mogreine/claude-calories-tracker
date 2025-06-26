@@ -25,6 +25,7 @@
       const [audioChunks, setAudioChunks] = useState([]);
       const [transcript, setTranscript] = useState('');
       const [error, setError] = useState('');
+      const [typedText, setTypedText] = useState('');
 
       const processAudio = async (audioBlob) => {
         setIsProcessing(true);
@@ -72,6 +73,66 @@
           setMeals(prev => [...prev, newMeal]);
           setRecordingText(`Added: ${nutritionData.foods.map(f => `${f.grams}g ${f.food}`).join(', ')}`);
           setError('');
+
+          setTimeout(() => setRecordingText(''), 4000);
+        } catch (error) {
+          console.error('Error processing nutrition data:', error);
+          setError('Error calculating nutrition. Please try again.');
+          setRecordingText('Error processing food data');
+          setTimeout(() => {
+            setRecordingText('');
+            setError('');
+          }, 3000);
+        }
+
+        setIsProcessing(false);
+      };
+
+      const processText = async () => {
+        if (!typedText.trim()) return;
+        setIsProcessing(true);
+        setRecordingText('Getting nutrition data...');
+
+        let response;
+        try {
+          response = await fetch('/process-text', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: typedText.trim() })
+          });
+        } catch (err) {
+          console.error('Request failed:', err);
+          setError('Failed to contact server');
+          setIsProcessing(false);
+          return;
+        }
+
+        if (!response.ok) {
+          console.error('Server error:', response.statusText);
+          setError('Server error');
+          setIsProcessing(false);
+          return;
+        }
+
+        try {
+          const nutritionData = await response.json();
+
+          const newMeal = {
+            id: Date.now(),
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            transcript: nutritionData.transcript,
+            foods: nutritionData.foods,
+            totalCalories: nutritionData.totalCalories,
+            totalProtein: nutritionData.totalProtein,
+            totalFat: nutritionData.totalFat,
+            totalCarbs: nutritionData.totalCarbs
+          };
+
+          setTranscript(nutritionData.transcript);
+          setMeals(prev => [...prev, newMeal]);
+          setRecordingText(`Added: ${nutritionData.foods.map(f => `${f.grams}g ${f.food}`).join(', ')}`);
+          setError('');
+          setTypedText('');
 
           setTimeout(() => setRecordingText(''), 4000);
         } catch (error) {
@@ -199,6 +260,27 @@
                 <div className="text-sm text-gray-600 min-h-[20px]">
                   {recordingText || (isRecording ? 'Say what you ate...' : 'Tap to start recording')}
                 </div>
+            </div>
+          </div>
+
+            {/* Text Input */}
+            <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+              <div className="flex items-end gap-2">
+                <input
+                  type="text"
+                  placeholder="Type what you ate..."
+                  value={typedText}
+                  onChange={e => setTypedText(e.target.value)}
+                  disabled={isProcessing}
+                  className="flex-grow border border-gray-300 rounded-lg p-2"
+                />
+                <button
+                  onClick={processText}
+                  disabled={isProcessing || !typedText.trim()}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-400"
+                >
+                  Add
+                </button>
               </div>
             </div>
 
