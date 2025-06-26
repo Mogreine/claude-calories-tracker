@@ -19,6 +19,11 @@ You can also run the site using Docker. Build and start the container with:
 ```
 
 The script builds the Docker image and runs it, exposing the port specified in the `PORT` environment variable (defaults to `3000`).
+Pass the `--update` flag to pull the latest changes before rebuilding. You can optionally provide the branch name (defaults to `main`):
+
+```bash
+./docker_run.sh --update [branch]
+```
 
 ## Testing
 
