@@ -1,0 +1,13 @@
+{
+  "name": "claude-calories-tracker",
+  "version": "1.0.0",
+  "description": "This repository contains a simple single-page application for tracking calories via voice input. It is implemented in plain HTML and React using CDN links so it can be hosted with GitHub Pages.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
